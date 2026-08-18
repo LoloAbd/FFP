@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_print
+import 'package:google_fonts/google_fonts.dart';
+import 'data.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -7,93 +10,147 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: Container(
-          width: double.infinity,
-          height: double.infinity,
-          padding: const EdgeInsets.fromLTRB(20, 120, 20, 20),
-         // margin: const EdgeInsets.only(top: 40),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 239, 205, 247),
-            borderRadius: BorderRadius.circular(25),
-            border: Border.all(
-              color: const Color.fromARGB(255, 60, 0, 69),
-              width: 2,
-            ),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromARGB(255, 60, 0, 69),
-                blurRadius: 4,
-                offset: Offset(2, 2),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 75, 15, 11),
+          title: Text(
+            'My Store',
+            style: GoogleFonts.alike(
+              textStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 30,
+                overflow: TextOverflow.visible,
+                fontWeight: FontWeight.bold,
               ),
-            ],
-          ),
-          child: const Align(
-            alignment: Alignment.topLeft,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CircleAvatar(
-                  radius: 70,
-                  backgroundImage: NetworkImage(
-                    'https://i.pinimg.com/736x/19/50/4c/19504c963c26157dda71717c922470e3.jpg',
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Alaa Abdalqader',
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'Computer Engineer',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0, top: 10.0),
-                      child: Icon(
-                        Icons.computer,
-                        size: 25,
-                        color: Color.fromARGB(255, 60, 0, 69),
-                      ),
-                    ),
-                    SizedBox(width: 4),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0, top: 10.0),
-                      child: Icon(
-                        Icons.adb,
-                        size: 25,
-                        color: Color.fromARGB(255, 60, 0, 69),
-                      ),
-                    ),
-                    SizedBox(width: 4),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10.0, top: 10.0),
-                      child: Icon(
-                        Icons.shield,
-                        size: 25,
-                        color: Color.fromARGB(255, 60, 0, 69),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
             ),
           ),
+          actions: [
+            IconButton(
+              onPressed: null,
+              icon: Icon(Icons.search, size: 30, color: Colors.white),
+            ),
+
+            IconButton(
+              onPressed: null,
+              icon: Icon(Icons.shopping_cart, size: 30, color: Colors.white),
+            ),
+          ],
+        ),
+
+        body: Column(
+          children: [
+            Container(
+              height: 60,
+              color: Colors.white,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: EdgeInsets.all(15),
+                    child: GestureDetector(
+                      onTap: () {
+                        print(categories[index]);
+                      },
+                      child: Text(
+                        categories[index],
+                        style: GoogleFonts.alike(
+                          textStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            overflow: TextOverflow.visible,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            Expanded(
+              //color: Colors.grey,
+              child: GridView.builder(
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.75,
+                ),
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Column(
+                      children: [
+                        if (products[index]['isNew'])
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 93, 2, 2),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              child: Text(
+                                'New',
+                                style: GoogleFonts.alike(
+                                  textStyle: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                    overflow: TextOverflow.visible,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                        SizedBox(height: 10),
+                        GestureDetector(
+                          onTap: () => print(
+                            '${products[index]['name']} \n ${products[index]['price']} \n ${products[index]['isNew']} \n ${products[index]['category']} \n',
+                          ),
+                          child: Image.network(
+                            products[index]['pic'],
+                            height: 120,
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          products[index]['name'],
+                          style: GoogleFonts.alike(
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              overflow: TextOverflow.visible,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10),
+                        Text(
+                          '${products[index]['price']} \$',
+                          style: GoogleFonts.alike(
+                            textStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 15,
+                              overflow: TextOverflow.visible,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );
